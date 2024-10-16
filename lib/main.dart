@@ -1,7 +1,9 @@
+import 'package:attendance_app/homescreen.dart';
 import 'package:attendance_app/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +39,47 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const KeyboardVisibilityProvider(child: LoginScreen()),
+      home: const KeyboardVisibilityProvider(child: AuthCheck()),
     );
+  }
+}
+
+class AuthCheck extends StatefulWidget {
+  const AuthCheck({super.key});
+
+  @override
+  State<AuthCheck> createState() => _AuthCheckState();
+}
+
+class _AuthCheckState extends State<AuthCheck> {
+  bool useravailable = false;
+  late SharedPreferences sharedPreferences;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    try {
+      if (sharedPreferences.getString('EmployeeId') != null) {
+        setState(() {
+          useravailable = true;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        useravailable = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return useravailable ? const HomeScreen() : const LoginScreen();
   }
 }

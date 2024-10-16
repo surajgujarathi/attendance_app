@@ -1,10 +1,10 @@
-import 'dart:math';
-
+import 'package:attendance_app/homescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,7 +19,11 @@ class _LoginscreenState extends State<LoginScreen> {
 
   double screenHeight = 0;
   double screenWidth = 0;
+
   Color primary = const Color(0xffeef444c);
+
+  late SharedPreferences sharedPreferences;
+
   @override
   Widget build(BuildContext context) {
     final bool isKeybaordvisible =
@@ -103,6 +107,15 @@ class _LoginscreenState extends State<LoginScreen> {
                       String storedPassword = snap.docs[0]['password'];
                       if (password == storedPassword) {
                         print('Continue');
+                        sharedPreferences =
+                            await SharedPreferences.getInstance();
+                        sharedPreferences.setString('EmployeeId', id).then((_) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        });
+
                         // Navigate to the next screen or perform the authenticated action
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -121,7 +134,8 @@ class _LoginscreenState extends State<LoginScreen> {
                     margin: EdgeInsets.only(top: screenHeight / 40),
                     decoration: BoxDecoration(
                         color: primary,
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(30))),
                     child: Center(
                       child: Text(
                         'Login',
