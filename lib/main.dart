@@ -1,5 +1,6 @@
 import 'package:attendance_app/homescreen.dart';
 import 'package:attendance_app/loginscreen.dart';
+import 'package:attendance_app/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -68,6 +69,7 @@ class _AuthCheckState extends State<AuthCheck> {
     try {
       if (sharedPreferences.getString('EmployeeId') != null) {
         setState(() {
+          User.username = sharedPreferences.getString('EmployeeId')!;
           useravailable = true;
         });
       }

@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double screenHeight = 0;
   double screenWidth = 0;
 
-  int currentIndex = 0;
+  int currentIndex = 1;
   Color primary = const Color(0xffeef444c);
   List<IconData> naviagationIcons = [
     Icons.calendar_month,
