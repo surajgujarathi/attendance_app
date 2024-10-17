@@ -39,6 +39,7 @@ dependencies:
   flutter_keyboard_visibility: ^6.0.0
   cloud_firestore: ^5.4.4
   shared_preferences: ^2.3.2
+  slide_to_act: ^2.0.2
 
 dev_dependencies:
   flutter_test:
