@@ -30,7 +30,7 @@ class _TodaysScreenState extends State<TodaysScreen> {
     try {
       QuerySnapshot snap = await FirebaseFirestore.instance
           .collection('Employee')
-          .where('id', isEqualTo: User.username)
+          .where('id', isEqualTo: User.employeeId)
           .get();
 
       if (snap.docs.isNotEmpty) {
@@ -64,7 +64,7 @@ class _TodaysScreenState extends State<TodaysScreen> {
     try {
       QuerySnapshot snap = await FirebaseFirestore.instance
           .collection('Employee')
-          .where('id', isEqualTo: User.username)
+          .where('id', isEqualTo: User.employeeId)
           .get();
 
       if (snap.docs.isEmpty) {
@@ -146,7 +146,7 @@ class _TodaysScreenState extends State<TodaysScreen> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Employee ' + User.username,
+                'Employee ${User.employeeId}',
                 style: TextStyle(fontSize: screenWidth / 18),
               ),
             ),
@@ -161,7 +161,7 @@ class _TodaysScreenState extends State<TodaysScreen> {
             Container(
               margin: const EdgeInsets.only(top: 12, bottom: 32),
               height: 150,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
@@ -229,7 +229,7 @@ class _TodaysScreenState extends State<TodaysScreen> {
               ),
             ),
             StreamBuilder(
-              stream: Stream.periodic(Duration(seconds: 1)),
+              stream: Stream.periodic(const Duration(seconds: 1)),
               builder: (context, snapshot) => Text(
                 DateFormat('hh:mm:ss a').format(DateTime.now()),
                 style: TextStyle(
@@ -238,7 +238,7 @@ class _TodaysScreenState extends State<TodaysScreen> {
             ),
             checkout == "--/--"
                 ? Container(
-                    margin: EdgeInsets.only(top: 24),
+                    margin: const EdgeInsets.only(top: 24),
                     child: Builder(
                       builder: (context) {
                         final GlobalKey<SlideActionState> key = GlobalKey();

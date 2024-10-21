@@ -1,6 +1,9 @@
 import 'package:attendance_app/calendar_screen.dart';
+import 'package:attendance_app/model/user.dart';
 import 'package:attendance_app/profile_screen.dart';
+import 'package:attendance_app/services/location_services.dart';
 import 'package:attendance_app/todays_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +20,45 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int currentIndex = 1;
   Color primary = const Color(0xffeef444c);
+  //bottom navigation
   List<IconData> naviagationIcons = [
     Icons.calendar_month,
     Icons.check_box_sharp,
     Icons.person_2_sharp
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _startLocationService();
+    getId();
+  }
+
+  void _startLocationService() async {
+    LocationService().initialize();
+
+    LocationService().getLongitude().then((value) {
+      setState(() {
+        User.lang = value!;
+      });
+
+      LocationService().getLatitude().then((value) {
+        setState(() {
+          User.lat = value!;
+        });
+      });
+    });
+  }
+
+  void getId() async {
+    QuerySnapshot snap = await FirebaseFirestore.instance
+        .collection('Employee')
+        .where('id', isEqualTo: User.employeeId)
+        .get();
+    setState(() {
+      User.id = snap.docs[0].id;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
